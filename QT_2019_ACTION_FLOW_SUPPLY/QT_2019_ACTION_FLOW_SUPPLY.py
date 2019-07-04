@@ -31,14 +31,20 @@ def main():
 
     df_search1 = df.loc[df['COMPANY NAME'].isin([search1_company_in])]      # search for company input
 
-    if df_search1.empty == False:
-        if len(df_search1['COMPANY NAME'].tolist()) > 1:
-            if sht_quotation.range('I5').value is None:
-                win32api.MessageBox(wb.app.hwnd, "Since, more than 1 element is found, so please enter the 'Location' as 2nd param.", "Search by Company")
-            else:
+    if df_search1.empty == False:       # check if the dataframe is not empty
+        if len(df_search1['COMPANY NAME'].tolist()) > 1:    # check if the dataframe by company_name has more than 1 row
+
+            # populate the Location column cells with location data
+            sht_quotation.range('M2:AZ1000000').clear_contents      # clear content only 
+            sht_quotation.range('M2').value = df_search1['LOCATION'].tolist()
+
+            if sht_quotation.range('I5').value is None:     # check if the cell 'I5' is empty
+                win32api.MessageBox(wb.app.hwnd, "Since, more than 1 element is found, so please enter the 'Location' as 2nd parameter", "Search by Company")
+
+            else:       # if the Location box is filled with location data
                 search1_location_in = sht_quotation.range('I5').value
                 df_search1_location = df_search1.loc[df_search1['LOCATION'].isin([search1_location_in])]    # search for location input
-                
+
                 if df_search1_location.empty == False:      # check if location based dataframe is not empty
                     # display data
                     sht_quotation.range('B10').value = df_search1_location['CONTACT 1'].tolist()[0]       # contact
@@ -47,7 +53,8 @@ def main():
                     sht_quotation.range('B13').value = df_search1_location['ADDRESS'].tolist()[0]       # address
                     sht_quotation.range('B14').value = df_search1_location['PHONE'].tolist()[0]       # phone
                 else:
-                    if sht_quotation.range('I5').value is None:
+                    # ignoring the case where 'I5' is empty. Basically, here it is not available in the Location list items, so don't prompt any dialog
+                    if sht_quotation.range('I5').value is None:      
                         pass
                     else:
                         win32api.MessageBox(wb.app.hwnd, "SORRY! The Location name doesn't exist.", "Search by Company")
