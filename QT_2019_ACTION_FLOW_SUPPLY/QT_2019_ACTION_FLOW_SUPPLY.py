@@ -23,14 +23,16 @@ sht_sales_order = wb.sheets['Sales Order']
 sht_customer = wb.sheets['Customers']
 sht_test = wb.sheets['test']    # test sheet
 
-# =================================================================RUN Button====================================================================================
-def quotation_run():
-    # Parse the 'Customers' data into dataframe
-    df = pd.ExcelFile(excel_file_directory).parse('Customers')
-    df = df[columns]
-    # sht_test.clear()        # clear content and formatting
-    # sht_test.range('A1').options(index= False).value = df
-    # sht_test.range('A1:Z1000000').autofit()
+#----------------------------------------------------------------------------------------------------------------------------------------------------
+# Parse the 'Customers' data into dataframe
+df = pd.ExcelFile(excel_file_directory).parse('Customers')
+df = df[columns]
+# sht_test.clear()        # clear content and formatting
+# sht_test.range('A1').options(index= False).value = df
+# sht_test.range('A1:Z1000000').autofit()
+
+# =================================================================Search-1: RUN Button====================================================================================
+def quotation_search1_run():
 
     #----------------------------------------------------------------------------------------------------------------------------------------------------
     search1_company_in = sht_quotation.range('H5').value     # input -- to be entered into search box in 'Quotation' sheet
@@ -72,12 +74,37 @@ def quotation_run():
             sht_quotation.range('B12').value = df_search1['LOCATION'].tolist()[0]       # location
             sht_quotation.range('B13').value = df_search1['ADDRESS'].tolist()[0]       # address
             sht_quotation.range('B14').value = df_search1['PHONE'].tolist()[0]       # phone
+    elif sht_quotation.range('H5').value is None:
+        win32api.MessageBox(wb.app.hwnd, "Please, enter Company Name in the search box", "Search by Company")
 
     else:
         win32api.MessageBox(wb.app.hwnd, "SORRY! The Company name doesn't exist.", "Search by Company")
 
-# ==========================================================RESET Button=======================================================================================
-def quotation_reset():
+# ==========================================================Search-1: RESET Button=======================================================================================
+def quotation_search1_reset():
     sht_quotation.range('Z2:AZ2').clear_contents()
     sht_quotation.range('H5').clear_contents()
     sht_quotation.range('I5').clear_contents()
+
+# ==========================================================Search-2: RUN Button=======================================================================================
+def quotation_search2_run():
+    search2_contact_in = sht_quotation.range('H20').value     # input -- to be entered into search box in 'Quotation' sheet
+
+    df_search2 = df.loc[df['CONTACT 1'].isin([search2_contact_in])]      # search for contact input
+    if df_search2.empty == False:
+        sht_quotation.range('B10').value = df_search2['CONTACT 1'].tolist()[0]       # contact
+        sht_quotation.range('B11').value = df_search2['COMPANY NAME'].tolist()[0]       # company
+        sht_quotation.range('B12').value = df_search2['LOCATION'].tolist()[0]       # location
+        sht_quotation.range('B13').value = df_search2['ADDRESS'].tolist()[0]       # address
+        sht_quotation.range('B14').value = df_search2['PHONE'].tolist()[0]       # phone
+
+    elif sht_quotation.range('H20').value is None:
+        win32api.MessageBox(wb.app.hwnd, "Please, enter Contact Name in the search box", "Search by Contact")
+
+    else:
+        win32api.MessageBox(wb.app.hwnd, "SORRY! The Contact name doesn't exist.", "Search by Contact")
+
+
+# ==========================================================Search-2: RESET Button=======================================================================================
+def quotation_search2_reset():
+    sht_quotation.range('H20').clear_contents()
