@@ -10,16 +10,22 @@ excel_file_directory = "I:\\github_repos\\work-6\\QT_2019_ACTION_FLOW_SUPPLY\\QT
 columns = ['COMPANY NAME', 'LOCATION', 'PHONE', 'ADDRESS', 'Second ship address', 'CONTACT 1', 
             'CONTACT 2', 'CONTACT 3', 'CONTACT 4', 'CONTACT 5', 'CONTACT 6']
 
-def main():
-    wb = xw.Book.caller()
-    # wb.sheets['test'].range("A1").value = "Hello xlwings!"
 
-    sht_quotation = wb.sheets['Quotation']
-    sht_sales_order = wb.sheets['Sales Order']
-    sht_customer = wb.sheets['Customers']
-    sht_test = wb.sheets['test']    # test sheet
+# ===============================================================INITIALIZATION==================================================================================
+"""
+    Initialize workbook and sheet variables
+"""
+wb = xw.Book.caller()
+# wb.sheets['test'].range("A1").value = "Hello xlwings!"
 
+sht_quotation = wb.sheets['Quotation']
+sht_sales_order = wb.sheets['Sales Order']
+sht_customer = wb.sheets['Customers']
+sht_test = wb.sheets['test']    # test sheet
 
+# =================================================================RUN Button====================================================================================
+def quotation_run():
+    # Parse the 'Customers' data into dataframe
     df = pd.ExcelFile(excel_file_directory).parse('Customers')
     df = df[columns]
     # sht_test.clear()        # clear content and formatting
@@ -35,8 +41,8 @@ def main():
         if len(df_search1['COMPANY NAME'].tolist()) > 1:    # check if the dataframe by company_name has more than 1 row
 
             # populate the Location column cells with location data
-            sht_quotation.range('M2:AZ1000000').clear_contents      # clear content only 
-            sht_quotation.range('M2').value = df_search1['LOCATION'].tolist()
+            sht_quotation.range('Z2:AZ2').clear_contents      # clear content only 
+            sht_quotation.range('Z2').value = df_search1['LOCATION'].tolist()
 
             if sht_quotation.range('I5').value is None:     # check if the cell 'I5' is empty
                 win32api.MessageBox(wb.app.hwnd, "Since, more than 1 element is found, so please enter the 'Location' as 2nd parameter", "Search by Company")
@@ -70,5 +76,8 @@ def main():
     else:
         win32api.MessageBox(wb.app.hwnd, "SORRY! The Company name doesn't exist.", "Search by Company")
 
-
-
+# ==========================================================RESET Button=======================================================================================
+def quotation_reset():
+    sht_quotation.range('Z2:AZ2').clear_contents()
+    sht_quotation.range('H5').clear_contents()
+    sht_quotation.range('I5').clear_contents()
