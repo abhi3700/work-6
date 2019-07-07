@@ -31,6 +31,11 @@ df = df[columns]
 # sht_test.range('A1').options(index= False).value = df
 # sht_test.range('A1:Z1000000').autofit()
 
+def clear_output_cells():
+    # Clear contents in the output cells
+    sht_quotation.range('B10:B14').clear_contents()
+    sht_quotation.range('D13').clear_contents()
+
 # =================================================================Search-1: RUN Button====================================================================================
 def quotation_search1_run():
 
@@ -54,12 +59,44 @@ def quotation_search1_run():
                 df_search1_location = df_search1.loc[df_search1['LOCATION'].isin([search1_location_in])]    # search for location input
 
                 if df_search1_location.empty == False:      # check if location based dataframe is not empty
+                    # Clear contents in the output cells
+                    clear_output_cells()
                     # display data
-                    sht_quotation.range('B10').value = df_search1_location['CONTACT 1'].tolist()[0]       # contact
+                    contact1_loc = df_search1_location['CONTACT 1'].tolist()[0]       # contact 1
+                    contact2_loc = df_search1_location['CONTACT 2'].tolist()[0]       # contact 2
+                    contact3_loc = df_search1_location['CONTACT 3'].tolist()[0]       # contact 3
+                    contact4_loc = df_search1_location['CONTACT 4'].tolist()[0]       # contact 4
+                    contact5_loc = df_search1_location['CONTACT 5'].tolist()[0]       # contact 5
+                    contact6_loc = df_search1_location['CONTACT 6'].tolist()[0]       # contact 6
+                    if contact1_loc == None:
+                        if contact2_loc == None:
+                            if contact3_loc == None:
+                                if contact4_loc == None:
+                                    if contact5_loc == None:
+                                        if contact6_loc == None:
+                                            sht_quotation.range('B10').value = ""
+                                        else:
+                                            sht_quotation.range('B10').value = contact6_loc
+                                    else:
+                                        sht_quotation.range('B10').value = contact5_loc
+                                else:
+                                    sht_quotation.range('B10').value = contact4_loc
+                            else:
+                                sht_quotation.range('B10').value = contact3_loc
+                        else:
+                            sht_quotation.range('B10').value = contact2_loc
+                    else:
+                        sht_quotation.range('B10').value = contact1_loc
+
                     sht_quotation.range('B11').value = df_search1_location['COMPANY NAME'].tolist()[0]       # company
                     sht_quotation.range('B12').value = df_search1_location['LOCATION'].tolist()[0]       # location
                     sht_quotation.range('B13').value = df_search1_location['ADDRESS'].tolist()[0]       # address
                     sht_quotation.range('B14').value = df_search1_location['PHONE'].tolist()[0]       # phone
+                    ship_address_location = df_search1_location['Second ship address'].tolist()[0]      # shipping address
+                    if ship_address_location != None:
+                        sht_quotation.range('D13').value = ship_address_location
+                    else:
+                        sht_quotation.range('D13').value = ""
                 else:
                     # ignoring the case where 'I5' is empty. Basically, here it is not available in the Location list items, so don't prompt any dialog
                     if sht_quotation.range('I5').value is None:      
@@ -68,12 +105,46 @@ def quotation_search1_run():
                         win32api.MessageBox(wb.app.hwnd, "SORRY! The Location name doesn't exist.", "Search by Company")
 
         else:
+            # Clear contents in the output cells
+            clear_output_cells()
+
             # display data
+            contact1 = df_search1['CONTACT 1'].tolist()[0]       # contact 1
+            contact2 = df_search1['CONTACT 2'].tolist()[0]       # contact 2
+            contact3 = df_search1['CONTACT 3'].tolist()[0]       # contact 3
+            contact4 = df_search1['CONTACT 4'].tolist()[0]       # contact 4
+            contact5 = df_search1['CONTACT 5'].tolist()[0]       # contact 5
+            contact6 = df_search1['CONTACT 6'].tolist()[0]       # contact 6
+            if contact1 == None:
+                if contact2 == None:
+                    if contact3 == None:
+                        if contact4 == None:
+                            if contact5 == None:
+                                if contact6 == None:
+                                    sht_quotation.range('B10').value = ""
+                                else:
+                                    sht_quotation.range('B10').value = contact6
+                            else:
+                                sht_quotation.range('B10').value = contact5
+                        else:
+                            sht_quotation.range('B10').value = contact4
+                    else:
+                        sht_quotation.range('B10').value = contact3
+                else:
+                    sht_quotation.range('B10').value = contact2
+            else:
+                sht_quotation.range('B10').value = contact1
             sht_quotation.range('B10').value = df_search1['CONTACT 1'].tolist()[0]       # contact
             sht_quotation.range('B11').value = df_search1['COMPANY NAME'].tolist()[0]       # company
             sht_quotation.range('B12').value = df_search1['LOCATION'].tolist()[0]       # location
             sht_quotation.range('B13').value = df_search1['ADDRESS'].tolist()[0]       # address
             sht_quotation.range('B14').value = df_search1['PHONE'].tolist()[0]       # phone
+            ship_address = df_search1['Second ship address'].tolist()[0]        # shipping address
+            if ship_address != None:
+                sht_quotation.range('D13').value = ship_address
+            else:
+                sht_quotation.range('D13').value = ""
+
     elif sht_quotation.range('H5').value is None:
         win32api.MessageBox(wb.app.hwnd, "Please, enter Company Name in the search box", "Search by Company")
 
@@ -92,12 +163,20 @@ def quotation_search2_run():
 
     df_search2 = df.loc[df['CONTACT 1'].isin([search2_contact_in])]      # search for contact input
     if df_search2.empty == False:
+        # Clear contents in the output cells
+        clear_output_cells()
+
+        # Display data
         sht_quotation.range('B10').value = df_search2['CONTACT 1'].tolist()[0]       # contact
         sht_quotation.range('B11').value = df_search2['COMPANY NAME'].tolist()[0]       # company
         sht_quotation.range('B12').value = df_search2['LOCATION'].tolist()[0]       # location
         sht_quotation.range('B13').value = df_search2['ADDRESS'].tolist()[0]       # address
         sht_quotation.range('B14').value = df_search2['PHONE'].tolist()[0]       # phone
-
+        ship_address_search2 = df_search2['Second ship address'].tolist()[0]        # shipping address
+        if ship_address_search2 != None:
+            sht_quotation.range('D13').value = ship_address_search2
+        else:
+            sht_quotation.range('D13').value = ""
     elif sht_quotation.range('H20').value is None:
         win32api.MessageBox(wb.app.hwnd, "Please, enter Contact Name in the search box", "Search by Contact")
 
