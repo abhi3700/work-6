@@ -1,0 +1,4 @@
++ parse 'contact_name' available in 'ship to' as well
++ address to be parsed, if shipping_address = EMPTY
+- dropdown list for shipping
+- dropdown list for contact names
