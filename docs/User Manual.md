@@ -7,6 +7,7 @@
 	pandas
 	pywin32
 	xlwings
+	numpy
 	```
 3. Enable macro settings in MS Excel.
 4. Integrate `xlwings` with Excel. It would appear in separate tab inside Excel application.
@@ -23,7 +24,11 @@
 	- `B12`: Company's location
 	- `B13`: Company's address
 	- `B14`: Company's phone no.
+	- `D10`: Contact name
+	- `D11`: Company name
+	- `D12`: Company's location
 	- `D13`: Company's shipping address 
+	- `D14`: Company's phone no.
 
 	> NOTE: The cell would be blank, if there is no corresponding data available in Excel sheet - `Customers`
 
@@ -33,6 +38,7 @@
 	- type nothing and press <kbd>RUN</kbd> button. Then, see the message.
 	- type "ALBERTA INFRASTRUCTURE" and press <kbd>RUN</kbd> button.
 	- type "TECHMATION ELECTRIC & CONTROLS" and press <kbd>RUN</kbd> button. Then, choose any location out of the drop-down list.
+	- type "TARPON ENERGY SERVICES" and press <kbd>RUN</kbd> button. Then, choose any location out of the drop-down list. Here, 'CONTACT 1' is empty, so 'CONTACT 2' is parsed.
 2. #### Search by Contact
 	- press <kbd>RESET</kbd> button to clear all existing values before making any search [RECOMMENDED]. 
 	- type nothing and press <kbd>RUN</kbd> button. Then, see the message.
