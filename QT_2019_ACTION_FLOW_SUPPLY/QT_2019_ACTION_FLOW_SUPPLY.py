@@ -202,7 +202,7 @@ def quotation_search2_run():
         sht_quotation.range('D11').value = df_search2['COMPANY NAME'].tolist()[0]       # company
         sht_quotation.range('D12').value = df_search2['LOCATION'].tolist()[0]       # location
         ship_address_search2 = df_search2['Second ship address'].tolist()[0]        # shipping address
-        if ship_address_search2 == NaN:
+        if ship_address_search2 is np.nan:
             sht_quotation.range('D13').value = df_search2['ADDRESS'].tolist()[0]
         else:
             sht_quotation.range('D13').value = ship_address_search2
